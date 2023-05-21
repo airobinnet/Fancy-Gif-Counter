@@ -20,4 +20,4 @@ This is a simple HTML page that allows you to create a customizable GIF counter 
 6. Press the "Generate GIF" button to create a GIF of your counter
 
 ## Example
-![Example](https://airobin.net/fancy_counter-44394.gif)
+![](https://airobin.net/fancy_counter-44394.gif)
