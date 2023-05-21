@@ -446,10 +446,10 @@
 
                         ctx.font = '24px Syne Mono';
                         ctx.fillStyle = 'black';
-                        const newY = y + 24;
+                        let newY = y + 24;
                         // detect if the browser is mobile or web
                         if (isMobile()) {
-                            newY = newY - 24;
+                            newY = y;
                         }
                         ctx.fillText(symbolBefore + currentNumber + symbolAfter, x, newY);
                     });
