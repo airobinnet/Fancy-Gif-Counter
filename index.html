@@ -446,12 +446,7 @@
 
                         ctx.font = '24px Syne Mono';
                         ctx.fillStyle = 'black';
-                        let newY = y + 24;
-                        // detect if the browser is mobile or web
-                        if (isMobile()) {
-                            newY = y;
-                        }
-                        ctx.fillText(symbolBefore + currentNumber + symbolAfter, x, newY);
+                        ctx.fillText(symbolBefore + currentNumber + symbolAfter, x, y + 24);
                     });
                     gif.addFrame(ctx, { delay: 40, copy: true, dispose: -1});
                     }
@@ -475,9 +470,6 @@
                 }
                 animate();
             });
-        }
-        function isMobile() {
-            return 'ontouchstart' in window;
         }
 
         const canvas = document.getElementById('canvas');
