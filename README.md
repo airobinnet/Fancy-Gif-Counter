@@ -2,6 +2,8 @@
 
 This is a simple HTML page that allows you to create a customizable GIF counter with various icons, numbers, and text. 
 
+live demo: [Here](https://airobinnet.github.io/Fancy-Gif-Counter/)
+
 ## Features
 
 - Add or remove counters with the + and - buttons
