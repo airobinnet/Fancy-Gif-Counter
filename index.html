@@ -378,7 +378,7 @@
                 const gif = new GIF({
                 workerScript: './gif.worker.js',
                 workers: 2,
-                quality: 50,
+                quality: 60,
                 width: canvas.width,
                 height: canvas.height,
                 repeat: -1,
@@ -419,7 +419,7 @@
                 });
 
                 let start = Date.now();
-                let duration = 2000;
+                let duration = 1500;
 
                 function drawFrame(progress) {
                     const easedProgress = easeOutCubic(progress); // Apply easing function
@@ -448,7 +448,7 @@
                         ctx.fillStyle = 'black';
                         ctx.fillText(symbolBefore + currentNumber + symbolAfter, x, y + 24);
                     });
-                    gif.addFrame(ctx, { delay: 20, copy: true, dispose: -1});
+                    gif.addFrame(ctx, { delay: 40, copy: true, dispose: -1});
                     }
 
                 function animate() {
