@@ -21,3 +21,4 @@ This is a simple HTML page that allows you to create a customizable GIF counter 
 
 ## Example
 ![](https://airobin.net/fancy_counter-44394.gif)
+[https://airobin.net/fancy_counter-44394.gif](https://airobin.net/fancy_counter-44394.gif)
