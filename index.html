@@ -446,7 +446,12 @@
 
                         ctx.font = '24px Syne Mono';
                         ctx.fillStyle = 'black';
-                        ctx.fillText(symbolBefore + currentNumber + symbolAfter, x, y + 24);
+                        const newY = y + 24;
+                        // detect if the browser is mobile or web
+                        if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i)) {
+                            newY = y - 24;
+                        }
+                        ctx.fillText(symbolBefore + currentNumber + symbolAfter, x, newY);
                     });
                     gif.addFrame(ctx, { delay: 40, copy: true, dispose: -1});
                     }
