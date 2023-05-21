@@ -18,3 +18,6 @@ This is a simple HTML page that allows you to create a customizable GIF counter 
 4. Change the gradient background colors using the color pickers
 5. Customize the logo color using the icon background color picker
 6. Press the "Generate GIF" button to create a GIF of your counter
+
+## Example
+![Example](https://airobin.net/fancy_counter-44394.gif)
