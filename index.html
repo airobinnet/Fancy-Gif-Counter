@@ -3,24 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gradient Canvas</title>
+    <title>Fancy GIF Counter</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href='https://fonts.googleapis.com/css?family=Autour One' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Syne Mono' rel='stylesheet'>
     <script src="gif.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
+            align-content: center;
+            justify-content: center;
+            display: grid;
+            height: 100vh;
+            width: 100vw;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background: linear-gradient(-45deg, #ee765255, #e73c7e55, #23a6d555, #23d5ab55);
+            background-size: 400% 400%;
+            animation: gradient 250s ease infinite;
+        }
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         .gradient-bg {
             width: 100%;
-            height: 100vh;
+            height: 100%;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
+            justify-items: center;
+            align-content: center;
+            overflow-y: auto;
+            overflow-x: hidden;
+            flex-direction: column;
+
         }
 
         .content-wrapper {
@@ -29,6 +55,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-y: auto;
+            overflow-x: hidden;
+            width: 400px;
+            min-height: 120px;
         }
 
         .rounded-rectangle {
@@ -40,7 +70,34 @@
             margin-bottom: 20px;
             position: relative;
             flex-direction: row;
-            width: 250px;
+            width: 300px;
+        }
+
+        .add-remove-icons i {
+            font-size: 24px;
+            margin: 0 10px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        #generate-gif-btn {
+            background-color: #333;
+            color: #fff;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 120px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #generate-gif-btn:hover {
+            background-color: #555;
         }
 
         .icon {
@@ -63,24 +120,18 @@
         .number {
             font-size: 24px;
             margin-bottom: 5px;
-            font-family: 'Autour One';
+            font-family: 'Syne Mono';
         }
 
         .text {
             font-size: 14px;
-            font-family: 'Autour One';
+            font-family: 'Syne Mono';
         }
 
         .add-remove-icons {
             display: flex;
             justify-content: center;
             margin-top: 20px;
-        }
-
-        .add-remove-icons i {
-            font-size: 24px;
-            margin: 0 10px;
-            cursor: pointer;
         }
 
         .icon-selector {
@@ -104,6 +155,9 @@
 
         .icon-selector.visible {
             display: flex;
+            max-height: 60px;
+            overflow-y: auto;
+            z-index: 1;
         }
 
         .colorpickers input {
@@ -114,13 +168,143 @@
             flex-direction: column;
             align-items: left;
         }
+
+        .loading {
+            position: relative;
+            pointer-events: none;
+        }
+
+        .loading::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid #fff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .collapsible-menu {
+            background-color: #f1f1f1;
+            color: #333;
+            cursor: pointer;
+            padding: 18px;
+            width: 500px;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        .active, .collapsible-menu:hover {
+            background-color: #555;
+            color: white;
+        }
+        .menu-content {
+            padding: 10px 18px;
+            display: none;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 10px;
+            overflow: hidden;
+            background-color: #f1f1f1;
+            max-height: 0;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .menu-content label {
+            font-weight: bold;
+        }
+
+        .menu-content.open {
+            display: grid;
+            max-height: 500px;
+        }
+
+        .draggable-text {
+            position: relative;
+            cursor: move;
+            background-color: #ffffff00;
+            padding: 5px;
+            border: 1px solid #cccccc00;
+        }
+        
+        .start-again-btn {
+            background-color: #333;
+            color: #fff;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 120px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .download-btn {
+            background-color: #333;
+            color: #fff;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 120px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #3e3e3e;
+            color: white;
+            text-align: center;
+        }
+
+        footer a {
+            color: #fff;
+        }
+
+        footer a:hover {
+            color: #ccc;
+        }
+
+        /* gif preview */
+        .gif-preview {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80%;
+            object-fit: contain;
+            display: none;
+        }
+
     </style>
 </head>
 <body>
     <div class="gradient-bg">
         <div class="content-wrapper">
             <div id="canvas">
-                <!-- Rectangles will be added here -->
             </div>
         </div>
         <div class="add-remove-icons">
@@ -128,25 +312,67 @@
             <i class="fas fa-minus-circle" onclick="removeRectangle()"></i>
         </div>
     <br>
-    <div class="colorpickers">
+    <button class="collapsible-menu">Color Pickers</button>
+    <div class="menu-content">
+        <label for="color1">Color 1:</label>
         <input type="color" id="color1" value="#95429A" onchange="updateGradient()">
+        <label for="color2">Color 2:</label>
         <input type="color" id="color2" value="#E6BCDD" onchange="updateGradient()">
+        <label for="color3">Icon Background Color:</label>
         <input type="color" id="color3" value="#E6BCDD" onchange="updateIconBackgroundColor()">
     </div>
+
     <br>
     <button id="generate-gif-btn">Generate GIF</button>
     <img id="gif-preview" style="display: none;" />
+    <br>
+    <br>
+    <footer>
+        <p>Created by <a href="https://airobin.net">AIRobin Solutions</a></p>
+    </footer>
     </div>
-
     <script>
-        document.getElementById('generate-gif-btn').addEventListener('click', generateGif);
+        document.querySelector('.collapsible-menu').addEventListener('click', function() {
+            this.classList.toggle('active');
+            const menuContent = this.nextElementSibling;
+            if (menuContent.style.display === 'grid') {
+                menuContent.style.display = 'none';
+            } else {
+                menuContent.style.display = 'grid';
+            }
+        });
+
+        document.querySelector('.collapsible-menu').addEventListener('click', function () {
+            this.classList.toggle('active');
+            const menuContent = this.nextElementSibling;
+            menuContent.classList.toggle('open');
+        });
 
         function easeOutCubic(t) {
-            return 1 - Math.pow(1 - t, 3);
+            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
         }
+        const generateGifBtn = document.getElementById('generate-gif-btn');
+
+        generateGifBtn.addEventListener('click', generateGif);
 
         function generateGif() {
             const contentWrapper = document.querySelector('.content-wrapper');
+            
+            generateGifBtn.classList.add('loading');
+            generateGifBtn.textContent = '';
+
+            const numbers = document.querySelectorAll('.number');
+            const cachedPositionsAndDimensions = [];
+            numbers.forEach((numberElement) => {
+                const numberRect = numberElement.getBoundingClientRect();
+                cachedPositionsAndDimensions.push({
+                    x: numberRect.left + window.scrollX,
+                    y: numberRect.top + window.scrollY,
+                    width: numberRect.width,
+                    height: numberRect.height
+                });
+            });
+            document.querySelectorAll('.icon-selector').forEach(selector => selector.classList.remove('visible'));
 
             html2canvas(contentWrapper).then((canvas) => {
                 const ctx = canvas.getContext('2d');
@@ -154,16 +380,44 @@
                 const gif = new GIF({
                 workerScript: './gif.worker.js',
                 workers: 2,
-                quality: 10,
+                quality: 50,
                 width: canvas.width,
                 height: canvas.height,
                 repeat: -1,
                 });
 
                 gif.on('finished', function (blob) {
-                const gifPreview = document.getElementById('gif-preview');
-                gifPreview.src = URL.createObjectURL(blob);
-                gifPreview.style.display = 'block';
+                    contentWrapper.remove();
+                    document.querySelector('.add-remove-icons').remove();
+                    document.querySelector('.menu-content').remove();
+                    document.querySelector('.collapsible-menu').remove();
+                    
+                    const gifPreview = document.getElementById('gif-preview');
+                    gifPreview.classList.add('gif-preview');
+                    gifPreview.src = URL.createObjectURL(blob);
+                    gifPreview.style.display = 'block';
+                    
+                    const downloadBtn = document.createElement('button');
+                    downloadBtn.textContent = 'Download GIF';
+                    downloadBtn.addEventListener('click', function () {
+                        const a = document.createElement('a');
+                        a.href = URL.createObjectURL(blob);
+                        a.download = 'fancy_counter-' + Math.floor(Math.random() * 1000000) + '.gif';
+                        a.click();
+                    });
+                    
+                    const startAgainBtn = document.createElement('button');
+                    startAgainBtn.textContent = 'Restart';
+                    startAgainBtn.addEventListener('click', function () {
+                        window.location.reload();
+                    });
+                    
+                    generateGifBtn.remove();
+                    document.querySelector('.gradient-bg').appendChild(downloadBtn);
+                    document.querySelector('.gradient-bg').appendChild(startAgainBtn);
+
+                    downloadBtn.classList.add('download-btn');
+                    startAgainBtn.classList.add('start-again-btn');
                 });
 
                 let start = Date.now();
@@ -173,29 +427,30 @@
                     const easedProgress = easeOutCubic(progress); // Apply easing function
 
                     const numbers = document.querySelectorAll('.number');
-                    numbers.forEach((numberElement) => {
+                    numbers.forEach((numberElement, index) => {
                         const numberText = numberElement.textContent;
-                        const regex = /([\D]*)(\d+)([\D]*)/; // Regular expression to match number and symbol/text
+                        const regex = /([\D]*)(\d+\.?\d*)([\D]*)/; // Regular expression to match number and symbol/text
                         const match = numberText.match(regex);
 
                         const symbolBefore = match[1];
-                        const targetNumber = parseInt(match[2]);
+                        const targetNumber = parseFloat(match[2]);
                         const symbolAfter = match[3];
-                        const currentNumber = Math.floor(targetNumber * easedProgress);
+                        const currentNumber = targetNumber % 1 === 0 ? (targetNumber * easedProgress).toFixed(0) : (targetNumber * easedProgress).toFixed(2);
+                        
+                        const cachedPositionAndDimension = cachedPositionsAndDimensions[index];
+                        const x = cachedPositionAndDimension.x;
+                        const y = cachedPositionAndDimension.y;
+                        const width = cachedPositionAndDimension.width;
+                        const height = cachedPositionAndDimension.height;
 
-                        const numberRect = numberElement.getBoundingClientRect();
-                        const contentWrapperRect = contentWrapper.getBoundingClientRect();
-                        const x = numberRect.left;
-                        const y = numberRect.top;
-                        // add white background
                         ctx.fillStyle = 'white';
-                        ctx.fillRect(x, y, numberRect.width + 20, numberRect.height);
+                        ctx.fillRect(x, y, width, height);
 
-                        ctx.font = '24px Autour One';
+                        ctx.font = '24px Syne Mono';
                         ctx.fillStyle = 'black';
                         ctx.fillText(symbolBefore + currentNumber + symbolAfter, x, y + 24);
                     });
-                    gif.addFrame(ctx, { delay: 20, copy: true });
+                    gif.addFrame(ctx, { delay: 20, copy: true, dispose: -1});
                     }
 
                 function animate() {
@@ -211,11 +466,10 @@
                 if (progress < 1) {
                     requestAnimationFrame(animate);
                 } else {
-                    gif.addFrame(ctx, { delay: 3000, copy: true });
+                    gif.addFrame(ctx, { delay: 2000, copy: true });
                     gif.render();
                 }
                 }
-
                 animate();
             });
         }
@@ -253,6 +507,47 @@
                 'fas fa-users',
                 'fas fa-globe',
                 'fas fa-heart',
+                'fas fa-star',
+                'fas fa-trophy',
+                'fas fa-award',
+                'fas fa-graduation-cap',
+                'fas fa-rocket',
+                'fas fa-briefcase',
+                'fas fa-balance-scale',
+                'fas fa-bullhorn',
+                'fas fa-bullseye',
+                'fas fa-certificate',
+                'fas fa-chart-bar',
+                'fas fa-chart-pie',
+                'fas fa-check',
+                'fas fa-check-circle',
+                'fas fa-check-square',
+                'fas fa-cloud',
+                'fas fa-cloud-download-alt',
+                'fas fa-cloud-upload-alt',
+                'fas fa-cog',
+                'fas fa-cogs',
+                'fas fa-comment',
+                'fas fa-comment-alt',
+                'fas fa-comments',
+                'fas fa-compass',
+                'fas fa-desktop',
+                'fas fa-download',
+                'fas fa-edit',
+                'fas fa-envelope',
+                'fas fa-exclamation',
+                'fas fa-exclamation-circle',
+                'fas fa-exclamation-triangle',
+                'fas fa-external-link-alt',
+                'fas fa-eye',
+                'fas fa-eye-slash',
+                'fas fa-file',
+                'fas fa-file-alt',
+                'fas fa-file-download',
+                'fas fa-file-upload',
+                'fas fa-filter',
+                'fas fa-flag',
+                'fas fa-folder',
             ];
 
             const iconSelector = document.createElement('div');
@@ -308,7 +603,58 @@
         }
 
         function addRectangle() {
-            const rectangle = createRectangle('fas fa-chart-line', '1000', 'Website Visits');
+            const icons = [
+                'fas fa-chart-line',
+                'fas fa-dollar-sign',
+                'fas fa-users',
+                'fas fa-globe',
+                'fas fa-heart',
+                'fas fa-star',
+                'fas fa-trophy',
+                'fas fa-award',
+                'fas fa-graduation-cap',
+                'fas fa-rocket',
+                'fas fa-briefcase',
+                'fas fa-balance-scale',
+                'fas fa-bullhorn',
+                'fas fa-bullseye',
+                'fas fa-certificate',
+                'fas fa-chart-bar',
+            ];
+
+            const numbers = [
+                '$ 500',
+                '1337',
+                '42 units',
+                '69 units',
+                '10000',
+                '1000',
+                '7568',
+                '50k',
+                '100k',
+                '10M',
+                '10875',
+                '4756797',
+
+            ];
+
+            const texts = [
+                'Website Visits',
+                'Total Sales',
+                'Total Users',
+                'Total Downloads',
+                'Total Uploads',
+                'Total Comments',
+                'Total Likes',
+                'Total Followers',
+                'Total Subscribers',
+                'Total Views',
+                'Answers to the Universe',
+            ];
+            const randomIconIndex = Math.floor(Math.random() * icons.length);
+            const randomNumberIndex = Math.floor(Math.random() * numbers.length);
+            const randomTextIndex = Math.floor(Math.random() * texts.length);
+            const rectangle = createRectangle(icons[randomIconIndex], numbers[randomNumberIndex], texts[randomTextIndex]);
             canvas.appendChild(rectangle);
         }
 
@@ -318,7 +664,6 @@
             }
         }
 
-        // Add the first rectangle on page load
         addRectangle();
     </script>
 </body>
